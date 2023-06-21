@@ -46,7 +46,6 @@ POSSIBILITY OF SUCH DAMAGE.
 #include <unistd.h> // for sleep function
 #include <wiringPi.h>
 #include <wiringPiSPI.h>
-#include <errno.h>
 
 #define	SPI_CHAN			0
 #define	NUM_TIMES		   	100
@@ -78,7 +77,6 @@ void spiSetup (int speed)
 {
   if ((myFd = wiringPiSPISetup (SPI_CHAN, speed)) < 0)
   {
-    //fprintf (stderr, "Can't open the SPI bus: %s\n", strerror (errno)) ;
     exit (EXIT_FAILURE) ;
   }
 }
@@ -93,8 +91,7 @@ int main (int argc, char** argv)
 
    if ((myData = (unsigned char*) malloc (MAX_SIZE)) == NULL)
    {
-    //fprintf (stderr, "Unable to allocate buffer: %s\n", strerror (errno)) ;
-    exit (EXIT_FAILURE) ;
+     exit (EXIT_FAILURE) ;
    }
 
    wiringPiSetup () ;
@@ -132,7 +129,6 @@ int main (int argc, char** argv)
          idata =0xABCD;
          if (wiringPiSPIDataRW (SPI_CHAN, (unsigned char*)&idata, 2) == -1)
          {
-            //printf ("SPI failure: %s\n", strerror (errno)) ;
             spiFail = TRUE ;
             break ;
          }
