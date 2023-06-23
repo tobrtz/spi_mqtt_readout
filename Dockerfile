@@ -14,10 +14,10 @@ WORKDIR /imotion-spi-rpi-mqtt-docker
 CMD ["./output"]
 
 #Docker build instruction for this Dockerfile is as below;
-#########################################################
-#     docker build -t <image-name> <Dockerfile-path>    #
-#     ex: docker build -t mywire .                      #     
-#########################################################
+####################################################################
+#     docker build --no-cache -t <image-name> <Dockerfile-path>    #
+#     ex: docker build --no-cache -t mywire .                      #     
+####################################################################
 
 #Docker run instruction (for image created above) is as below;
 #######################################################################################################################
