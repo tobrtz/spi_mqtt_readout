@@ -51,10 +51,8 @@ POSSIBILITY OF SUCH DAMAGE.
 
 /***********************MQTT config**********************/
 const char *client_name = "default_pub"; 	// -c
-//const char *ip_addr     = "127.0.0.1";		// -i
-//uint32_t    port        = 1883;			// -p
-const char *ip_addr     = "a20vz0y1zmz0e-ats.iot.eu-west-1.amazonaws.com";		// -i
-uint32_t    port        = 8883;			// -p
+const char *ip_addr     = "127.0.0.1";		// -i
+uint32_t    port        = 1883;			// -p
 const char *topic       = "iMotion/spi/data";	// -t
 uint32_t    count       = 10;			// -n
 
