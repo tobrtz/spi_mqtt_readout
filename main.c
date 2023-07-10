@@ -29,6 +29,7 @@ POSSIBILITY OF SUCH DAMAGE.
 /*************************Includes************************/
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 #include <string.h>
 #include "mqtt.h"
 #include <unistd.h> // for sleep function
@@ -82,13 +83,13 @@ void hex2float_Iu_Iv(unsigned int idata){
 
 }
 
-void hex2float_R_angle(unsigned int idata, signed float data_real){
+void hex2float_R_angle(unsigned int idata, float data_real){
    bool positive = true;
    float real_value_t = 0;
    unsigned int val;
 
    positive = !(idata & (1<<(15)));    //check if angle is positive
-   char hex[] = idata;
+   char hex[4] = idata;
 
    for(int i=0;i<4;i++) {
 
@@ -109,17 +110,17 @@ void hex2float_R_angle(unsigned int idata, signed float data_real){
 
         }
 
-      real_value_t += val * pow(16, i);
+      real_value_t += val * 16^i;
    }
 
-   if (positive) data_real=real_value_t*180/32768
+   if (positive) data_real=real_value_t*180/32768;
    else data_real=(-1)*real_value_t*180/32768;
    
 }
 
 void hex2float_VdcRaw(unsigned int idata, float data_real){
    idata = idata & (0x0FFF);
-   char hex[] = idata;
+   char hex[4] = idata;
       for(int i=0;i<4;i++) {
 
       /* Find the decimal representation of hex[i] */
