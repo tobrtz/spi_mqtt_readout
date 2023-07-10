@@ -83,7 +83,7 @@ void hex2float_Iu_Iv(unsigned int idata){
 
 }
 
-void hex2float_R_angle(unsigned int idata, float data_real){
+float hex2float_R_angle(unsigned int idata, float data_real){
    bool positive = true;
    float real_value_t = 0;
    unsigned int val;
@@ -116,10 +116,12 @@ void hex2float_R_angle(unsigned int idata, float data_real){
 
    if (positive) data_real=real_value_t*180/32768;
    else data_real=(-1)*real_value_t*180/32768;
+
+   return data_real;
    
 }
 
-void hex2float_VdcRaw(unsigned int idata, float data_real){
+float hex2float_VdcRaw(unsigned int idata, float data_real){
    idata = idata & (0x0FFF);
    char hex[4];
    sprintf(hex, "%d", idata);
@@ -149,6 +151,8 @@ void hex2float_VdcRaw(unsigned int idata, float data_real){
    }
 
    data_real=real_value_t*MAX_VDC_SENSE/4096;
+
+   return data_real;
 
 }
 /*Main application - iMotion SPI Readout + MQTT Publish*/
@@ -186,7 +190,7 @@ int main (int argc, char** argv)
    printf ("|             iMOTION SPI ReadOut - RPi               |\n") ;
    printf ("+--------+--------+--------+--------+--------+--------+\n") ;
    printf ("+--------+--------+--------+--------+--------+--------+\n") ;
-   printf ("|   Iu   |   Iv   | VdcRaw | RAngle | Valpha | Vbeta  |\n") ;
+   printf ("|   Iu   |   Iv   | VdcRaw | R_Angle | Valpha | Vbeta  |\n") ;
    printf ("+--------+--------+--------+--------+--------+--------+\n") ;   
    size = sizeof(idata);
    
@@ -214,7 +218,7 @@ int main (int argc, char** argv)
 	 }
 	 else if (param_nos == VDCRAW)
 	 {	 
-      hex2float_VdcRaw(idata,data_real);
+      data_real = hex2float_VdcRaw(idata,data_real);
       printf ("| %f V ", data_real) ;
 	   sprintf(msg, "VdcRaw = %f V", data_real);
       //printf ("| 0x%04x ", idata) ;
@@ -223,9 +227,9 @@ int main (int argc, char** argv)
 	 else if (param_nos == RANGLE)
 	 {	
 
-      hex2float_R_angle(idata,data_real);
-      printf("| %f ° ", data_real) ;
-	   sprintf(msg, "R_angle = %f °", data_real);
+      //hex2float_R_angle(idata,data_real);
+      //printf("| %f ° ", data_real) ;
+	   //sprintf(msg, "R_angle = %f °", data_real);
       //printf ("| 0x%04x ", idata) ;
 	   //sprintf(msg, "Rangle = 0x%04x", idata);
 	 }
