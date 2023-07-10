@@ -49,6 +49,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #define	 TRUE				(1==1)
 #define	 FALSE				(!TRUE)
 
+#define MAX_VDC_SENSE 499.54
+#define MAX_I_SENSE  
+
 /***********************MQTT config**********************/
 const char *client_name = "default_pub"; 	// -c
 const char *ip_addr     = "127.0.0.1";		// -i
@@ -70,12 +73,85 @@ void spiSetup (int speed)
   }
 }
 
+void hex2float_Valpha_beta(unsigned int idata){
+   
+
+}
+
+void hex2float_Iu_Iv(unsigned int idata){
+
+}
+
+void hex2float_R_angle(unsigned int idata, signed float data_real){
+   bool positive = true;
+   float real_value_t = 0;
+   unsigned int val;
+
+   positive = !(idata & (1<<(15)));    //check if angle is positive
+   char hex[] = idata;
+
+   for(int i=0;i<4;i++) {
+
+      /* Find the decimal representation of hex[i] */
+      if(hex[i]>='0' && hex[i]<='9'){
+         
+         val = hex[i] - 48;
+
+         }
+      else if(hex[i]>='a' && hex[i]<='f'){
+
+         val = hex[i] - 97 + 10;
+
+         }
+      else if(hex[i]>='A' && hex[i]<='F'){
+
+         val = hex[i] - 65 + 10;
+
+        }
+
+      real_value_t += val * pow(16, i);
+   }
+
+   if (positive) data_real=real_value_t*180/32768
+   else data_real=(-1)*real_value_t*180/32768;
+   
+}
+
+void hex2float_VdcRaw(unsigned int idata, float data_real){
+   idata = idata & (0x0FFF);
+   char hex[] = idata;
+      for(int i=0;i<4;i++) {
+
+      /* Find the decimal representation of hex[i] */
+      if(hex[i]>='0' && hex[i]<='9'){
+         
+         val = hex[i] - 48;
+
+         }
+      else if(hex[i]>='a' && hex[i]<='f'){
+
+         val = hex[i] - 97 + 10;
+
+         }
+      else if(hex[i]>='A' && hex[i]<='F'){
+
+         val = hex[i] - 65 + 10;
+
+        }
+
+      real_value_t += val * pow(16, i);
+   }
+
+   data_real=real_value_t*MAX_VDC_SENSE/4096;
+
+}
 /*Main application - iMotion SPI Readout + MQTT Publish*/
 int main (int argc, char** argv)
 {   
    puts("Running the spiReadout-MQTT Publish application inside container");
    int speed, times, size ;
-   unsigned int idata =0xABCD;
+   unsigned int idata = 0.0;
+   float data_real = 0.0;
    int spiFail ;
    double timePerTransaction, perfectTimePerTransaction, dataSpeed ;
    char msg[128];
@@ -132,13 +208,20 @@ int main (int argc, char** argv)
 	 }
 	 else if (param_nos == VDCRAW)
 	 {	 
-         printf ("| 0x%04x ", idata) ;
-	 sprintf(msg, "VdcRaw = 0x%04x", idata);
+      hex2float_VdcRaw(idata,data_real);
+      printf ("| %f V ", data_real) ;
+	   sprintf(msg, "VdcRaw = %f V", data_real);
+      //printf ("| 0x%04x ", idata) ;
+	   //sprintf(msg, "VdcRaw = 0x%04x", idata);
 	 }
 	 else if (param_nos == RANGLE)
-	 {	 
-         printf ("| 0x%04x ", idata) ;
-	 sprintf(msg, "Rangle = 0x%04x", idata);
+	 {	
+
+      hex2float_R_angle(idata,data_real);
+      printf("| %f ° ", data_real) ;
+	   sprintf(msg, "R_angle = %f °", data_real);
+      //printf ("| 0x%04x ", idata) ;
+	   //sprintf(msg, "Rangle = 0x%04x", idata);
 	 }
 	 else if (param_nos == VALPHA)
 	 {	 
