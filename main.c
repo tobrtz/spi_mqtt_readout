@@ -122,9 +122,9 @@ float hex2float_R_angle(unsigned int idata, float data_real){
 }
 
 float hex2float_VdcRaw(unsigned int idata, float data_real){
-   idata = idata & (0x0FFF);
+   int idata_t = idata & (0x0FFF);
    char hex[4];
-   sprintf(hex, "%d", idata);
+   sprintf(hex, "%d", idata_t);
    int val;
    float real_value_t;
 
@@ -211,11 +211,15 @@ int main (int argc, char** argv)
          printf ("| 0x%04x ", idata) ;
 	 sprintf(msg, "Iu     = 0x%04x", idata);
 	 }
+
+
 	 else if (param_nos == IV)
 	 {	 
          printf ("| 0x%04x ", idata) ;
 	 sprintf(msg, "Iv     = 0x%04x", idata);
 	 }
+
+
 	 else if (param_nos == VDCRAW)
 	 {	 
       data_real = hex2float_VdcRaw(idata,data_real);
@@ -224,12 +228,14 @@ int main (int argc, char** argv)
       //printf ("| 0x%04x ", idata) ;
 	   //sprintf(msg, "VdcRaw = 0x%04x", idata);
 	 }
+
+
 	 else if (param_nos == RANGLE)
 	 {	
 
-      //hex2float_R_angle(idata,data_real);
-      //printf("| %f ° ", data_real) ;
-	   //sprintf(msg, "R_angle = %f °", data_real);
+      hex2float_R_angle(idata,data_real);
+      printf("| %f ° ", data_real) ;
+	   sprintf(msg, "R_angle = %f °", data_real);
       //printf ("| 0x%04x ", idata) ;
 	   //sprintf(msg, "Rangle = 0x%04x", idata);
 	 }
