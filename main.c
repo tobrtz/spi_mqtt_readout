@@ -90,7 +90,7 @@ void hex2float_R_angle(unsigned int idata, float data_real){
 
    positive = !(idata & (1<<(15)));    //check if angle is positive
    char hex[4];
-   hex = idata;
+   sprintf(hex, "%d", idata);
 
    for(int i=0;i<4;i++) {
 
@@ -122,8 +122,8 @@ void hex2float_R_angle(unsigned int idata, float data_real){
 void hex2float_VdcRaw(unsigned int idata, float data_real){
    idata = idata & (0x0FFF);
    char hex[4];
-   hex = idata;
-   unsigned int val;
+   sprintf(hex, "%d", idata);
+   int val;
 
       for(int i=0;i<4;i++) {
 
