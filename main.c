@@ -124,6 +124,7 @@ void hex2float_VdcRaw(unsigned int idata, float data_real){
    char hex[4];
    sprintf(hex, "%d", idata);
    int val;
+   float real_value_t;
 
       for(int i=0;i<4;i++) {
 
@@ -144,7 +145,7 @@ void hex2float_VdcRaw(unsigned int idata, float data_real){
 
         }
 
-      real_value_t += val * pow(16, i);
+      real_value_t += val * 16^i;
    }
 
    data_real=real_value_t*MAX_VDC_SENSE/4096;
