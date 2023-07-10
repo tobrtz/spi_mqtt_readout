@@ -233,7 +233,7 @@ int main (int argc, char** argv)
 	 else if (param_nos == RANGLE)
 	 {	
 
-      hex2float_R_angle(idata,data_real);
+      data_real = hex2float_R_angle(idata,data_real);
       printf("| %f ° ", data_real) ;
 	   sprintf(msg, "R_angle = %f °", data_real);
       //printf ("| 0x%04x ", idata) ;
