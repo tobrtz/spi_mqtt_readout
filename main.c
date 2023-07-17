@@ -172,7 +172,7 @@ int main (int argc, char** argv)
 	   {	 
          data_dec = hextodec(param_nos,idata);
          printf ("| %f A ", data_dec);
-	      sprintf(msg, "Iu = %f A", data_dec);
+	      sprintf(msg, "Iu = %.2f A", data_dec);
          //printf ("| 0x%04x ", idata) ;
 	      //sprintf(msg, "Iu     = 0x%04x", idata);
 	   }
@@ -182,7 +182,7 @@ int main (int argc, char** argv)
 	   {	 
          data_dec = hextodec(param_nos,idata);
          printf ("| %f A ", data_dec) ;
-	      sprintf(msg, "Iv = %f A", data_dec);
+	      sprintf(msg, "Iv = %.2f A", data_dec);
          //printf ("| 0x%04x ", idata) ;
 	      //sprintf(msg, "Iv     = 0x%04x", idata);
 	   }
@@ -192,7 +192,7 @@ int main (int argc, char** argv)
 	   {	 
          data_dec = hextodec(param_nos,idata);
          printf ("| %f V ", data_dec) ;
-	      sprintf(msg, "VdcRaw = %f V", data_dec);
+	      sprintf(msg, "VdcRaw = %.2f V", data_dec);
          //printf ("| 0x%04x ", idata) ;
 	      //sprintf(msg, "VdcRaw = 0x%04x", idata);
 	   }
@@ -202,7 +202,7 @@ int main (int argc, char** argv)
 	   {	
          data_dec = hextodec(param_nos,idata);
          printf("| %f ° ", data_dec) ;
-	      sprintf(msg, "R_angle = %f °", data_dec);
+	      sprintf(msg, "R_angle = %.2f °", data_dec);
          //printf ("| 0x%04x ", idata) ;
 	      //sprintf(msg, "Rangle = 0x%04x", idata);
 	   }
@@ -211,7 +211,7 @@ int main (int argc, char** argv)
 	   {	 
          data_dec = hextodec(param_nos,idata);
          printf ("| %f V ", data_dec) ;
-	      sprintf(msg, "Valpha = %f V", data_dec);
+	      sprintf(msg, "Valpha = %.2f V", data_dec);
          //printf ("| 0x%04x ", idata) ;
 	      //sprintf(msg, "Valpha = 0x%04x", idata);
 	   }
@@ -220,7 +220,7 @@ int main (int argc, char** argv)
 	   {	 
          data_dec = hextodec(param_nos,idata);
          printf ("| %f V ", data_dec) ;
-	      sprintf(msg, "Vbeta = %f V", data_dec);
+	      sprintf(msg, "Vbeta = %.2f V", data_dec);
          //printf ("| 0x%04x ", idata) ;
 	      //sprintf(msg, "Vbeta  = 0x%04x", idata);
 	   }
