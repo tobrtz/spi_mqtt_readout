@@ -74,7 +74,7 @@ void spiSetup (int speed)
   }
 }
 
-float hextodec(unsigned int param_nos,unsigned int idata_t) {
+float hextodec(unsigned int param_nos_t,unsigned int idata_t) {
    float rslt_t;
    bool positive = true;
    int sign;
@@ -84,31 +84,39 @@ float hextodec(unsigned int param_nos,unsigned int idata_t) {
    if (positive) sign = 1;                   //initializing helping variable for sign operation
    else (sign = -1);
 
-   if (param_nos!=3){
-      idata_t = 0x7FFF & idata_t;            //remove signing bit of data
-   }
+   //if (param_nos_t!=3){
+   //   idata_t = 0x7FFF & idata_t;            //remove signing bit of data
+   //}
 
 
-   rslt_t = (float) idata_t;
+   
 
    //printf("Parameter %i: %f",param_nos,rslt_t);        
    //printf("\n %i ",param_nos);
    
-   switch(param_nos){
+   switch(param_nos_t){
 
    case 5: case 4:    //IU, IV
+      idata_t = 0x07FF & idata_t;
+      rslt_t = (float) idata_t;
       rslt_t = sign * rslt_t * MAX_I_SENSE / 2048;
       return rslt_t;
 
    case 3:    //VdcRaw
+      idata_t = 0x0FFF & idata_t;
+      rslt_t = (float) idata_t;
       rslt_t = rslt_t * MAX_VDC_SENSE / 4096;
       return rslt_t;
 
    case 2:    //Rangle
+      idata_t = 0x7FFF & idata_t;
+      rslt_t = (float) idata_t;
       rslt_t = sign * rslt_t * MAX_ANGLE / 32768; 
       return rslt_t; 
 
    case 1: case 0:     //Valpha, Vbeta
+      idata_t = 0x1FFF & idata_t;
+      rslt_t = (float) idata_t;
       rslt_t = sign * rslt_t * MAX_VDC_SENSE / (3 * 8191);
       return rslt_t;
 
@@ -173,7 +181,7 @@ int main (int argc, char** argv)
 	 if (param_nos == IU)
 	   {	 
          data_dec = hextodec(param_nos,idata);
-         printf ("| %.2f      A ", data_dec);
+         printf ("| %.2f A ", data_dec);
 	      sprintf(msg, "Iu = %.2f A", data_dec);
          printf ("| 0x%04x ", idata) ;
 	      sprintf(msg, "Iu     = 0x%04x", idata);
@@ -183,7 +191,7 @@ int main (int argc, char** argv)
 	 else if (param_nos == IV)
 	   {	 
          data_dec = hextodec(param_nos,idata);
-         printf ("| %.2f      A ", data_dec) ;
+         printf ("| %.2f A ", data_dec) ;
 	      sprintf(msg, "Iv = %.2f A", data_dec);
          printf ("| 0x%04x ", idata) ;
 	      sprintf(msg, "Iv     = 0x%04x", idata);
@@ -193,7 +201,7 @@ int main (int argc, char** argv)
 	 else if (param_nos == VDCRAW)
 	   {	 
          data_dec = hextodec(param_nos,idata);
-         printf ("| %.2f      V ", data_dec) ;
+         printf ("| %.2f V ", data_dec) ;
 	      sprintf(msg, "VdcRaw = %.2f V", data_dec);
          printf ("| 0x%04x ", idata) ;
 	      sprintf(msg, "VdcRaw = 0x%04x", idata);
@@ -203,7 +211,7 @@ int main (int argc, char** argv)
 	 else if (param_nos == RANGLE)
 	   {	
          data_dec = hextodec(param_nos,idata);
-         printf("| %.2f     ° ", data_dec) ;
+         printf("| %.2f ° ", data_dec) ;
 	      sprintf(msg, "R_angle = %.2f °", data_dec);
          printf ("| 0x%04x ", idata) ;
 	      sprintf(msg, "Rangle = 0x%04x", idata);
@@ -212,7 +220,7 @@ int main (int argc, char** argv)
     else if (param_nos == VALPHA)
 	   {	 
          data_dec = hextodec(param_nos,idata);
-         printf ("| %.2f     V ", data_dec) ;
+         printf ("| %.2f V ", data_dec) ;
 	      sprintf(msg, "Valpha = %.2f V", data_dec);
          printf ("| 0x%04x ", idata) ;
 	      sprintf(msg, "Valpha = 0x%04x", idata);
@@ -221,7 +229,7 @@ int main (int argc, char** argv)
     else if (param_nos == VBETA)
 	   {	 
          data_dec = hextodec(param_nos,idata);
-         printf ("| %.2f      V ", data_dec) ;
+         printf ("| %.2f V ", data_dec) ;
 	      sprintf(msg, "Vbeta = %.2f V", data_dec);
          printf ("| 0x%04x ", idata) ;
 	      sprintf(msg, "Vbeta  = 0x%04x", idata);
