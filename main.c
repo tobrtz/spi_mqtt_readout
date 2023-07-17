@@ -92,7 +92,7 @@ float hextodec(unsigned int param_nos,unsigned int idata_t) {
    rslt_t = (float) idata_t;
 
    //printf("Parameter %i: %f",param_nos,rslt_t);        
-
+   printf("%i \n",param_nos);
    
    switch(param_nos){
 
@@ -169,13 +169,13 @@ int main (int argc, char** argv)
          }
 
 	 if (param_nos == IU)
-	 {	 
-      data_dec = hextodec(param_nos,idata);
-      printf ("| %f A ", data_dec) ;
-	   sprintf(msg, "Iu = %f A", data_dec);
-      //printf ("| 0x%04x ", idata) ;
-	   //sprintf(msg, "Iu     = 0x%04x", idata);
-	 }
+	   {	 
+         data_dec = hextodec(param_nos,idata);
+         printf ("| %f A ", data_dec) ;
+	      sprintf(msg, "Iu = %f A", data_dec);
+         //printf ("| 0x%04x ", idata) ;
+	      //sprintf(msg, "Iu     = 0x%04x", idata);
+	   }
 
 
 	 else if (param_nos == IV)
