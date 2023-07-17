@@ -52,7 +52,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
 #define MAX_VDC_SENSE 129.84    //=Vadc_ref*(R_hi+R_lo)/R_lo (Vadc_ref=3.3, R_hi=R1=510kOhm, R_lo=R2=13.3kOhm) Calculation of MAX_VDC_SENSE
 #define MAX_I_SENSE 3.3         //=Vadc_ref/Internal_Gain (Internal_Gain = 1)
-
+#define MAX_ANGLE 180
 /***********************MQTT config**********************/
 const char *client_name = "default_pub"; 	// -c
 const char *ip_addr     = "127.0.0.1";		// -i
@@ -105,11 +105,11 @@ float hextodec(unsigned int param_nos,unsigned int idata_t) {
       return rslt_t;
 
    case 2:    //Rangle
-      rslt_t = sign * (180 / 32768) * rslt_t;
+      rslt_t = sign * rslt_t * MAX_ANGLE / 32768; 
       return rslt_t; 
 
    case 1: case 0:     //Valpha, Vbeta
-      rslt_t = sign * rslt_t * (1/3) * MAX_VDC_SENSE / 8191;
+      rslt_t = sign * rslt_t * MAX_VDC_SENSE / (3 * 8191);
       return rslt_t;
 
    }
