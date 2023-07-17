@@ -50,8 +50,8 @@ POSSIBILITY OF SUCH DAMAGE.
 #define	 TRUE				(1==1)
 #define	 FALSE				(!TRUE)
 
-#define MAX_VDC_SENSE 499.54
-#define MAX_I_SENSE  
+#define MAX_VDC_SENSE 129.84    //=Vadc_ref*(R_hi+R_lo)/R_lo (Vadc_ref=3.3, R_hi=R1=510kOhm, R_lo=R2=13.3kOhm) Calculation of MAX_VDC_SENSE
+#define MAX_I_SENSE 3.3         //=Vadc_ref/Internal_Gain (Internal_Gain = 1)
 
 /***********************MQTT config**********************/
 const char *client_name = "default_pub"; 	// -c
@@ -95,11 +95,11 @@ float hextodec(unsigned int param_nos,unsigned int idata_t) {
    switch(param_nos){
 
    case 5: case 4:    //IU, IV
-      rslt_t = sign * rslt_t * MAX_I_SENSE * (1/2048);
+      rslt_t = sign * rslt_t * MAX_I_SENSE / 2048;
       return rslt_t;
 
    case 3:    //VdcRaw
-      rslt_t = rslt_t * MAX_VDC_SENSE * (1/4096);
+      rslt_t = rslt_t * MAX_VDC_SENSE / 4096;
       return rslt_t;
 
    case 2:    //Rangle
@@ -107,7 +107,7 @@ float hextodec(unsigned int param_nos,unsigned int idata_t) {
       return rslt_t; 
 
    case 1: case 0:     //Valpha, Vbeta
-      rslt_t = sign * rslt_t * (1/3) * MAX_VDC_SENSE * (1/8191);
+      rslt_t = sign * rslt_t * (1/3) * MAX_VDC_SENSE / 8191;
       return rslt_t;
 
    }
