@@ -92,7 +92,7 @@ float hextodec(unsigned int param_nos,unsigned int idata_t) {
    rslt_t = (float) idata_t;
 
    //printf("Parameter %i: %f",param_nos,rslt_t);        
-   printf("\n %i ",param_nos);
+   //printf("\n %i ",param_nos);
    
    switch(param_nos){
 
