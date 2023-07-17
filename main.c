@@ -133,7 +133,9 @@ int main (int argc, char** argv)
    /*Setting up SPI0 baudrate 1MHz*/
    spiSetup (1000000) ;
 
+
    puts("MQTT Publisher connecting to broker");
+
 
    mqtt_broker_handle_t *broker = mqtt_connect(client_name, ip_addr, port);
     
@@ -171,58 +173,58 @@ int main (int argc, char** argv)
 	 if (param_nos == IU)
 	   {	 
          data_dec = hextodec(param_nos,idata);
-         printf ("| %.2f A ", data_dec);
+         printf ("| %.2f      A ", data_dec);
 	      sprintf(msg, "Iu = %.2f A", data_dec);
-         //printf ("| 0x%04x ", idata) ;
-	      //sprintf(msg, "Iu     = 0x%04x", idata);
+         printf ("| 0x%04x ", idata) ;
+	      sprintf(msg, "Iu     = 0x%04x", idata);
 	   }
 
 
 	 else if (param_nos == IV)
 	   {	 
          data_dec = hextodec(param_nos,idata);
-         printf ("| %.2f A ", data_dec) ;
+         printf ("| %.2f      A ", data_dec) ;
 	      sprintf(msg, "Iv = %.2f A", data_dec);
-         //printf ("| 0x%04x ", idata) ;
-	      //sprintf(msg, "Iv     = 0x%04x", idata);
+         printf ("| 0x%04x ", idata) ;
+	      sprintf(msg, "Iv     = 0x%04x", idata);
 	   }
 
 
 	 else if (param_nos == VDCRAW)
 	   {	 
          data_dec = hextodec(param_nos,idata);
-         printf ("| %.2f V ", data_dec) ;
+         printf ("| %.2f      V ", data_dec) ;
 	      sprintf(msg, "VdcRaw = %.2f V", data_dec);
-         //printf ("| 0x%04x ", idata) ;
-	      //sprintf(msg, "VdcRaw = 0x%04x", idata);
+         printf ("| 0x%04x ", idata) ;
+	      sprintf(msg, "VdcRaw = 0x%04x", idata);
 	   }
 
 
 	 else if (param_nos == RANGLE)
 	   {	
          data_dec = hextodec(param_nos,idata);
-         printf("| %.2f ° ", data_dec) ;
+         printf("| %.2f     ° ", data_dec) ;
 	      sprintf(msg, "R_angle = %.2f °", data_dec);
-         //printf ("| 0x%04x ", idata) ;
-	      //sprintf(msg, "Rangle = 0x%04x", idata);
+         printf ("| 0x%04x ", idata) ;
+	      sprintf(msg, "Rangle = 0x%04x", idata);
 	   }
 	 
     else if (param_nos == VALPHA)
 	   {	 
          data_dec = hextodec(param_nos,idata);
-         printf ("| %.2f V ", data_dec) ;
+         printf ("| %.2f     V ", data_dec) ;
 	      sprintf(msg, "Valpha = %.2f V", data_dec);
-         //printf ("| 0x%04x ", idata) ;
-	      //sprintf(msg, "Valpha = 0x%04x", idata);
+         printf ("| 0x%04x ", idata) ;
+	      sprintf(msg, "Valpha = 0x%04x", idata);
 	   }
 	 
     else if (param_nos == VBETA)
 	   {	 
          data_dec = hextodec(param_nos,idata);
-         printf ("| %.2f V ", data_dec) ;
+         printf ("| %.2f      V ", data_dec) ;
 	      sprintf(msg, "Vbeta = %.2f V", data_dec);
-         //printf ("| 0x%04x ", idata) ;
-	      //sprintf(msg, "Vbeta  = 0x%04x", idata);
+         printf ("| 0x%04x ", idata) ;
+	      sprintf(msg, "Vbeta  = 0x%04x", idata);
 	   }
 
 
