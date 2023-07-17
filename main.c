@@ -95,19 +95,19 @@ float hextodec(unsigned int param_nos,unsigned int idata_t) {
    switch(param_nos){
 
    case 5: case 4:    //IU, IV
-      rslt_t = sign * rslt_t * MAX_I_SENSE/2048;
+      rslt_t = sign * rslt_t * MAX_I_SENSE * (1/2048);
       return rslt_t;
 
    case 3:    //VdcRaw
-      rslt_t = rslt_t * MAX_VDC_SENSE/4096;
+      rslt_t = rslt_t * MAX_VDC_SENSE * (1/4096);
       return rslt_t;
 
    case 2:    //Rangle
-      rslt_t = sign * rslt_t * 180/32768;
+      rslt_t = sign * (180 / 32768) * rslt_t;
       return rslt_t; 
 
    case 1: case 0:     //Valpha, Vbeta
-      rslt_t = sign * rslt_t * (1/3) * MAX_VDC_SENSE/8191;
+      rslt_t = sign * rslt_t * (1/3) * MAX_VDC_SENSE * (1/8191);
       return rslt_t;
 
    }
@@ -120,7 +120,7 @@ int main (int argc, char** argv)
    puts("Running the spiReadout-MQTT Publish application inside container");
    int speed, times, size ;
    unsigned int idata = 0.0;
-   float data_real = 0.0;
+   float data_dec = 0.0;
    int spiFail ;
    double timePerTransaction, perfectTimePerTransaction, dataSpeed ;
    char msg[128];
@@ -149,7 +149,7 @@ int main (int argc, char** argv)
    printf ("|             iMOTION SPI ReadOut - RPi               |\n") ;
    printf ("+--------+--------+--------+--------+--------+--------+\n") ;
    printf ("+--------+--------+--------+--------+--------+--------+\n") ;
-   printf ("|   Iu   |   Iv   | VdcRaw | R_Angle | Valpha | Vbeta  |\n") ;
+   printf ("|   Iu   |   Iv   | VdcRaw | R_Angle | Valpha | Vbeta |\n") ;
    printf ("+--------+--------+--------+--------+--------+--------+\n") ;   
    size = sizeof(idata);
    
@@ -198,7 +198,7 @@ int main (int argc, char** argv)
 
 	 else if (param_nos == RANGLE)
 	   {	
-         data_dec = hextodec(idata,data_dec);
+         data_dec = hextodec(param_nos,idata);
          printf("| %f ° ", data_dec) ;
 	      sprintf(msg, "R_angle = %f °", data_dec);
          //printf ("| 0x%04x ", idata) ;
