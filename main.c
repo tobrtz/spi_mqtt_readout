@@ -92,7 +92,7 @@ float hextodec(unsigned int param_nos,unsigned int idata_t) {
    rslt_t = (float) idata_t;
 
    //printf("Parameter %i: %f",param_nos,rslt_t);        
-   printf("%i \n",param_nos);
+   printf("\n %i ",param_nos);
    
    switch(param_nos){
 
@@ -203,8 +203,8 @@ int main (int argc, char** argv)
          data_dec = hextodec(param_nos,idata);
          printf("| %f ° ", data_dec) ;
 	      sprintf(msg, "R_angle = %f °", data_dec);
-         //printf ("| 0x%04x ", idata) ;
-	      //sprintf(msg, "Rangle = 0x%04x", idata);
+         printf ("| 0x%04x ", idata) ;
+	      sprintf(msg, "Rangle = 0x%04x", idata);
 	   }
 	 
     else if (param_nos == VALPHA)
@@ -212,8 +212,8 @@ int main (int argc, char** argv)
          data_dec = hextodec(param_nos,idata);
          printf ("| %f V ", data_dec) ;
 	      sprintf(msg, "Valpha = %f V", data_dec);
-         //printf ("| 0x%04x ", idata) ;
-	      //sprintf(msg, "Valpha = 0x%04x", idata);
+         printf ("| 0x%04x ", idata) ;
+	      sprintf(msg, "Valpha = 0x%04x", idata);
 	   }
 	 
     else if (param_nos == VBETA)
@@ -221,8 +221,8 @@ int main (int argc, char** argv)
          data_dec = hextodec(param_nos,idata);
          printf ("| %f V ", data_dec) ;
 	      sprintf(msg, "Vbeta = %f V", data_dec);
-         //printf ("| 0x%04x ", idata) ;
-	      //sprintf(msg, "Vbeta  = 0x%04x", idata);
+         printf ("| 0x%04x ", idata) ;
+	      sprintf(msg, "Vbeta  = 0x%04x", idata);
 	   }
 
 
