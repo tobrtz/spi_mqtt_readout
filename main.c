@@ -74,87 +74,46 @@ void spiSetup (int speed)
   }
 }
 
-void hex2float_Valpha_beta(unsigned int idata){
-   
-
-}
-
-void hex2float_Iu_Iv(unsigned int idata){
-
-}
-
-float hex2float_R_angle(unsigned int idata, float data_real){
+float hextodec(unsigned int param_nos,unsigned int idata_t) {
+   float rslt_t;
    bool positive = true;
-   float real_value_t = 0;
-   unsigned int val;
+   int sign;
 
-   positive = !(idata & (1<<(15)));    //check if angle is positive
-   char hex[4];
-   sprintf(hex, "%d", idata);
+   positive = !(idata_t & (1<<15));          //check if data is positive
 
-   for(int i=0;i<4;i++) {
+   if (positive) sign = 1;                   //initializing helping variable for sign operation
+   else (sign = -1);
 
-      /* Find the decimal representation of hex[i] */
-      if(hex[i]>='0' && hex[i]<='9'){
-         
-         val = hex[i] - 48;
-
-         }
-      else if(hex[i]>='a' && hex[i]<='f'){
-
-         val = hex[i] - 97 + 10;
-
-         }
-      else if(hex[i]>='A' && hex[i]<='F'){
-
-         val = hex[i] - 65 + 10;
-
-        }
-
-      real_value_t += val * 16^i;
+   if (param_nos!=3){
+      idata_t = 0x7FFF & idata_t;            //remove signing bit of data
    }
 
-   if (positive) data_real=real_value_t*180/32768;
-   else data_real=(-1)*real_value_t*180/32768;
 
-   return data_real;
+   rslt_t = (float) idata_t;        
+
    
-}
+   switch(param_nos){
 
-float hex2float_VdcRaw(unsigned int idata, float data_real){
-   int idata_t = idata & (0x0FFF);
-   char hex[4];
-   sprintf(hex, "%d", idata_t);
-   int val;
-   float real_value_t;
+   case 5: case 4:    //IU, IV
+      rslt_t = sign * rslt_t * MAX_I_SENSE/2048;
+      return rslt_t;
 
-      for(int i=0;i<4;i++) {
+   case 3:    //VdcRaw
+      rslt_t = rslt_t * MAX_VDC_SENSE/4096;
+      return rslt_t;
 
-      /* Find the decimal representation of hex[i] */
-      if(hex[i]>='0' && hex[i]<='9'){
-         
-         val = hex[i] - 48;
+   case 2:    //Rangle
+      rslt_t = sign * rslt_t * 180/32768;
+      return rslt_t; 
 
-         }
-      else if(hex[i]>='a' && hex[i]<='f'){
+   case 1: case 0:     //Valpha, Vbeta
+      rslt_t = sign * rslt_t * (1/3) * MAX_VDC_SENSE/8191;
+      return rslt_t;
 
-         val = hex[i] - 97 + 10;
-
-         }
-      else if(hex[i]>='A' && hex[i]<='F'){
-
-         val = hex[i] - 65 + 10;
-
-        }
-
-      real_value_t += val * 16^i;
    }
-
-   data_real=real_value_t*MAX_VDC_SENSE/4096;
-
-   return data_real;
-
 }
+
+
 /*Main application - iMotion SPI Readout + MQTT Publish*/
 int main (int argc, char** argv)
 {   
@@ -206,49 +165,66 @@ int main (int argc, char** argv)
             spiFail = TRUE ;
             break ;
          }
+
 	 if (param_nos == IU)
 	 {	 
-         printf ("| 0x%04x ", idata) ;
-	 sprintf(msg, "Iu     = 0x%04x", idata);
+      data_dec = hextodec(param_nos,idata);
+      printf ("| %f A ", data_dec) ;
+	   sprintf(msg, "Iu = %f A", data_dec);
+      //printf ("| 0x%04x ", idata) ;
+	   //sprintf(msg, "Iu     = 0x%04x", idata);
 	 }
 
 
 	 else if (param_nos == IV)
-	 {	 
-         printf ("| 0x%04x ", idata) ;
-	 sprintf(msg, "Iv     = 0x%04x", idata);
-	 }
+	   {	 
+         data_dec = hextodec(param_nos,idata);
+         printf ("| %f A ", data_dec) ;
+	      sprintf(msg, "Iv = %f A", data_dec);
+         //printf ("| 0x%04x ", idata) ;
+	      //sprintf(msg, "Iv     = 0x%04x", idata);
+	   }
 
 
 	 else if (param_nos == VDCRAW)
-	 {	 
-      data_real = hex2float_VdcRaw(idata,data_real);
-      printf ("| %f V ", data_real) ;
-	   sprintf(msg, "VdcRaw = %f V", data_real);
-      //printf ("| 0x%04x ", idata) ;
-	   //sprintf(msg, "VdcRaw = 0x%04x", idata);
-	 }
+	   {	 
+         data_dec = hextodec(param_nos,idata);
+         printf ("| %f V ", data_dec) ;
+	      sprintf(msg, "VdcRaw = %f V", data_dec);
+         //printf ("| 0x%04x ", idata) ;
+	      //sprintf(msg, "VdcRaw = 0x%04x", idata);
+	   }
 
 
 	 else if (param_nos == RANGLE)
-	 {	
+	   {	
+         data_dec = hextodec(idata,data_dec);
+         printf("| %f ° ", data_dec) ;
+	      sprintf(msg, "R_angle = %f °", data_dec);
+         //printf ("| 0x%04x ", idata) ;
+	      //sprintf(msg, "Rangle = 0x%04x", idata);
+	   }
+	 
+    else if (param_nos == VALPHA)
+	   {	 
+         data_dec = hextodec(param_nos,idata);
+         printf ("| %f V ", data_dec) ;
+	      sprintf(msg, "Valpha = %f V", data_dec);
+         //printf ("| 0x%04x ", idata) ;
+	      //sprintf(msg, "Valpha = 0x%04x", idata);
+	   }
+	 
+    else if (param_nos == VBETA)
+	   {	 
+         data_dec = hextodec(param_nos,idata);
+         printf ("| %f V ", data_dec) ;
+	      sprintf(msg, "Vbeta = %f V", data_dec);
+         //printf ("| 0x%04x ", idata) ;
+	      //sprintf(msg, "Vbeta  = 0x%04x", idata);
+	   }
 
-      data_real = hex2float_R_angle(idata,data_real);
-      printf("| %f ° ", data_real) ;
-	   sprintf(msg, "R_angle = %f °", data_real);
-      //printf ("| 0x%04x ", idata) ;
-	   //sprintf(msg, "Rangle = 0x%04x", idata);
-	 }
-	 else if (param_nos == VALPHA)
-	 {	 
-         printf ("| 0x%04x ", idata) ;
-	 sprintf(msg, "Valpha = 0x%04x", idata);
-	 }
-	 else if (param_nos == VBETA)
-	 {	 
-         printf ("| 0x%04x ", idata) ;
-	 sprintf(msg, "Vbeta  = 0x%04x", idata);
-	 }
+
+
 	/*Publishing each iMotion 16bit signal values to topic*/      
 	if(mqtt_publish(broker, topic, msg, QoS1) == -1) {
             printf("publish failed\n");
